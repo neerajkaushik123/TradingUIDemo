@@ -1,0 +1,97 @@
+﻿<Window x:Class="UIDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:v="clr-namespace:UIDemo.View"
+    Title="QuickFIXN UIDemo App"
+    Height="700"
+    Width="700"
+    >
+
+    <!--DataContexts are assigned in App.xaml.cs-->
+
+    <Grid Background="#DDDDDD">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="Black" Margin="5" Padding="5" Background="#EEEEEE" HorizontalAlignment="Center">
+            <StackPanel x:Name="ConnectionView" Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style x:Key="EnableIfConnected" TargetType="FrameworkElement">
+                        <Setter Property="FrameworkElement.IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="FrameworkElement.IsEnabled" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="EnableIfDisconnected" TargetType="FrameworkElement">
+                        <Setter Property="FrameworkElement.IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                <Setter Property="FrameworkElement.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <Label Content="SessionID:" FontWeight="Bold"/>
+                        <Label Content="Connected?" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <StackPanel.Resources>
+                            <Style x:Key="ConnectionStatusStyle" TargetType="Label">
+                                <Setter Property="Label.Content" Value="No"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                        <Setter Property="Label.Content" Value="Yes"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Label Content="{Binding SessionString}"/>
+                        <Label Style="{StaticResource ConnectionStatusStyle}"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="bttnConnect" Content="Connect" Width="80" Command="{Binding ConnectCommand}"
+                        Style="{StaticResource EnableIfDisconnected}"/>
+                    <Button x:Name="bttnDisconnect" Content="Disconnect" Width="80" Command="{Binding DisconnectCommand}"
+                        Style="{StaticResource EnableIfConnected}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="5">
+            <TabItem Header="Read Me">
+                <v:InstructionsView x:Name="InstructionsView"/>
+            </TabItem>
+            
+            <TabItem Header="MessageView">
+                <v:MessageView x:Name="MessageView"/>
+            </TabItem>
+            
+            <TabItem Header="Orders">
+                <v:OrderView x:Name="OrderView"/>
+            </TabItem>
+
+            <TabItem Header="Executions">
+                <v:ExecutionView x:Name="ExecutionView"/>
+            </TabItem>
+
+            <TabItem Header="News">
+                <v:NewsSenderView x:Name="NewsSenderView"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

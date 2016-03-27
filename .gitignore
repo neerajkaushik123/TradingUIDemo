@@ -1,0 +1,14 @@
+*.user
+*.suo
+*.cache
+*.swp
+UIDemo/UIDemo/bin/
+UIDemo/UIDemo/obj/
+UIDemo/UnitTests/bin/
+UIDemo/UnitTests/obj/
+UIDemo/FIXApplication/bin/
+UIDemo/FIXApplication/obj/
+
+/UIDemo/Acceptor/bin/Debug
+/UIDemo/Acceptor/obj
+/UIDemo/Acceptor/bin/Release
